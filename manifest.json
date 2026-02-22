@@ -1,0 +1,18 @@
+{
+  "name": "PF Trainer – Kontrolle & Kraft",
+  "short_name": "PF Trainer",
+  "description": "Pelvic Floor Trainingsplan",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080c16",
+  "theme_color": "#080c16",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23080c16' width='512' height='512' rx='100'/><text x='256' y='310' text-anchor='middle' font-size='250' fill='%2310b981'>◆</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
