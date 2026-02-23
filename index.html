@@ -67,6 +67,10 @@ nav{display:flex;justify-content:space-around;padding:8px 2px;border-bottom:1px 
 .g-card{background:var(--card);border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid var(--border)}
 .hidden{display:none}
 .loading{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);font-size:40px;color:var(--green)}
+input[type="time"]{-webkit-appearance:none;appearance:none;color-scheme:dark}
+input[type="time"]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.6}
+textarea{-webkit-appearance:none;appearance:none;outline:none}
+textarea:focus,input[type="time"]:focus{border-color:var(--cyan)!important}
 .ob{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center}
 </style>
 </head>
@@ -89,11 +93,11 @@ reverse:{id:"reverse",name:"Reverse Kegel",icon:"◇",color:"#ec4899",short:"Bew
 };
 
 const BONUS={
-bridge:{id:"bridge",name:"Brücke",icon:"🌉",color:"#f97316",short:"Beckenboden + Gesäß + Core.",pos:"Liegen (Rücken)",dur:"3 × 10 Wdh.",goal:"Kraft & Stabilität",steps:["Auf den Rücken legen. Knie angewinkelt, Füße hüftbreit.","Arme neben dem Körper, Handflächen nach unten.","Beckenboden anspannen.","Becken langsam anheben bis Oberschenkel und Oberkörper eine Linie bilden.","Oben 3–5 Sek. halten. Beckenboden bleibt angespannt.","Langsam absenken. Erst unten: Beckenboden loslassen."],tip:"Kombiniert Beckenboden mit Ganzkörpertraining. 3 Sätze, 60 Sek. Pause."},
-breath:{id:"breath",name:"Atem-Kopplung",icon:"🫁",color:"#06b6d4",short:"Atemrhythmus synchronisieren.",pos:"Liegen oder Sitzen",dur:"5 Minuten",goal:"Kontrolle & Körperbewusstsein",steps:["Bequem auf den Rücken legen oder aufrecht sitzen.","Hand auf Bauch, Hand auf Brust.","Einatmen (4 Sek.) – Beckenboden entspannt sich natürlich.","Atem kurz halten (2 Sek.).","Ausatmen (6 Sek.) – Beckenboden sanft anspannen.","Rhythmus: Einatmen = entspannen, Ausatmen = anspannen.","5 Minuten wiederholen."],tip:"Zwerchfell und Beckenboden arbeiten zusammen. Extrem wirksam für die Kontrolle – ruhiges Atmen ist der Schlüssel.",ctrl:true},
+bridge:{id:"bridge",name:"Brücke",icon:"🌉",color:"#f97316",short:"Beckenboden + Gesäß + Core.",pos:"Liegen (Rücken)",dur:"3 × 10 Wdh.",goal:"Kraft & Stabilität",steps:["Auf den Rücken legen. Knie angewinkelt, Füße hüftbreit.","Arme neben dem Körper, Handflächen nach unten.","Beckenboden anspannen.","Becken langsam anheben bis Oberschenkel und Oberkörper eine Linie bilden.","Oben 3–5 Sek. halten. Beckenboden bleibt angespannt.","Langsam absenken. Erst unten: Beckenboden loslassen."],tip:"Kombiniert Beckenboden mit Ganzkörpertraining. 3 Sätze, 60 Sek. Pause.",timer:{hold:4,rest:4,reps:10,sets:3,sBrk:60,holdLabel:"HALTEN ↑",restLabel:"ABSENKEN ↓",hint:"Becken oben halten – Beckenboden angespannt"}},
+breath:{id:"breath",name:"Atem-Kopplung",icon:"🫁",color:"#06b6d4",short:"Atemrhythmus synchronisieren.",pos:"Liegen oder Sitzen",dur:"5 Minuten",goal:"Kontrolle & Körperbewusstsein",steps:["Bequem auf den Rücken legen oder aufrecht sitzen.","Hand auf Bauch, Hand auf Brust.","Einatmen (4 Sek.) – Beckenboden entspannt sich natürlich.","Atem kurz halten (2 Sek.).","Ausatmen (6 Sek.) – Beckenboden sanft anspannen.","Rhythmus: Einatmen = entspannen, Ausatmen = anspannen.","5 Minuten wiederholen."],tip:"Zwerchfell und Beckenboden arbeiten zusammen. Extrem wirksam für die Kontrolle – ruhiges Atmen ist der Schlüssel.",ctrl:true,timer:{hold:12,rest:2,reps:5,sets:4,sBrk:10,holdLabel:"ATMEN 🌬",restLabel:"KURZ LÖSEN",hint:"4s ein → 2s halten → 6s aus + anspannen"}},
 startstop:{id:"startstop",name:"Start-Stopp",icon:"🔴",color:"#ef4444",short:"Praxis-Training für Timing-Kontrolle.",pos:"Privat, allein",dur:"15–20 Min.",goal:"Direkte Timing-Kontrolle",steps:["Diese Übung wird bei der Selbstbefriedigung praktiziert.","Beginne langsam. Achte bewusst auf dein Erregungsniveau.","Skala 1–10: 1 = keine Erregung, 10 = Höhepunkt.","Bei Level 7: STOPPE komplett.","Sofort Reverse Kegel – bewusstes Entspannen.","Tief in den Bauch atmen. Warte bis Level 3–4.","Erneut beginnen. 3–5 Zyklen pro Sitzung.","Dein Körper lernt, die Erregungskurve zu steuern."],tip:"Die wichtigste praktische Übung. Kombiniere mit Reverse Kegels und Atem-Technik. 2–3× pro Woche. Nach 4–6 Wochen deutliche Verbesserungen.",ctrl:true},
 squeeze:{id:"squeeze",name:"Squeeze & Halt",icon:"✊",color:"#a855f7",short:"Physische Kontrolltechnik bei hoher Erregung.",pos:"Privat",dur:"Im Moment anwenden",goal:"Akute Kontrolle",steps:["Wird bei Erregungslevel 8–9 eingesetzt.","Eichel mit Daumen und Zeigefinger umgreifen, unter dem Rand.","Fest zusammendrücken, 10–15 Sek. Spürbar, nicht schmerzhaft.","Gleichzeitig: Reverse Kegel + tief in den Bauch atmen.","Die Erregung wird merklich nachlassen.","30 Sek. warten, dann fortsetzen.","Mit Start-Stopp kombinieren für maximale Wirkung."],tip:"Von Masters & Johnson entwickelt. Zuverlässige Notbremse. Mit der Zeit reicht der Reverse Kegel allein.",ctrl:true},
-squat:{id:"squat",name:"Tiefe Hocke",icon:"🏋️",color:"#84cc16",short:"Beckenboden dehnen und unter Last trainieren.",pos:"Stehen → Hocke",dur:"3 × 30 Sek.",goal:"Flexibilität",steps:["Hüftbreit stehen, Füße leicht nach außen.","Langsam in tiefe Hocke – so tief wie bequem.","Rücken gerade, Fersen am Boden.","Beckenboden ist natürlich gedehnt.","In der Hocke anspannen, 5 Sek. halten.","Loslassen und Dehnung spüren.","30 Sek. halten, dann aufrichten."],tip:"Die natürlichste Position für den Beckenboden. Verbessert Flexibilität, verhindert Verspannungen."}
+squat:{id:"squat",name:"Tiefe Hocke",icon:"🏋️",color:"#84cc16",short:"Beckenboden dehnen und unter Last trainieren.",pos:"Stehen → Hocke",dur:"3 × 30 Sek.",goal:"Flexibilität",steps:["Hüftbreit stehen, Füße leicht nach außen.","Langsam in tiefe Hocke – so tief wie bequem.","Rücken gerade, Fersen am Boden.","Beckenboden ist natürlich gedehnt.","In der Hocke anspannen, 5 Sek. halten.","Loslassen und Dehnung spüren.","30 Sek. halten, dann aufrichten."],tip:"Die natürlichste Position für den Beckenboden. Verbessert Flexibilität, verhindert Verspannungen.",timer:{hold:30,rest:15,reps:1,sets:3,sBrk:15,holdLabel:"HALTEN 🦵",restLabel:"AUFRICHTEN",hint:"Tiefe Hocke halten – Beckenboden anspannen & loslassen"}}
 };
 
 const PHASES=[
@@ -125,14 +129,15 @@ const fdm=(y,m)=>{const d=new Date(y,m,1).getDay();return d===0?6:d-1};
 const diff=(a,b)=>Math.floor((new Date(b)-new Date(a))/864e5);
 const $=s=>document.querySelector(s);
 const h=(el,html)=>{if(typeof el==='string')el=$(el);el.innerHTML=html};
-const INIT={startDate:td(),totalDays:120,currentPhase:1,phaseStartDay:0,completedDays:{},bonusLog:{},totalSessions:0,currentStreak:0,bestStreak:0,onboarded:false};
+const INIT={startDate:td(),totalDays:120,currentPhase:1,phaseStartDay:0,completedDays:{},bonusLog:{},totalSessions:0,currentStreak:0,bestStreak:0,onboarded:false,notifyEnabled:false,notifyTime:"19:00",notifyText:""};
 
 // ═══ STATE ═══
 let D,pg="home",cm=new Date().getMonth(),cy=new Date().getFullYear(),exDet=null,selBonus=null;
-let tActive=false,eIdx=0,ph="ready",cRep=1,cSet=1,tLeft=0,iRef=null,aCtx=null;
-let planInput=120;
+let tActive=false,eIdx=0,ph="ready",cRep=1,cSet=1,tLeft=0,iRef=null,aCtx=null,paused=false;
+let planInput=120,notifyCheckRef=null;
+let bonusMode=false,bonusId=null,bWorkout=[];
 
-function load(){const s=localStorage.getItem("kegel-v5");if(s){D=JSON.parse(s);planInput=D.totalDays||120}else{D={...INIT}}}
+function load(){const s=localStorage.getItem("kegel-v5");if(s){D=JSON.parse(s);if(D.notifyEnabled===undefined){D.notifyEnabled=false;D.notifyTime="19:00";D.notifyText=""}if(D.notifyText===undefined)D.notifyText="";planInput=D.totalDays||120}else{D={...INIT}}}
 function save(){localStorage.setItem("kegel-v5",JSON.stringify(D))}
 
 function tone(f,d){try{if(!aCtx)aCtx=new(window.AudioContext||window.webkitAudioContext)();const o=aCtx.createOscillator(),g=aCtx.createGain();o.connect(g);g.connect(aCtx.destination);o.frequency.value=f;o.type="sine";g.gain.setValueAtTime(.1,aCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,aCtx.currentTime+d);o.start();o.stop(aCtx.currentTime+d)}catch(e){}}
@@ -228,18 +233,19 @@ ${done?`<div style="display:flex;flex-direction:column;align-items:center;gap:5p
 }
 
 function renderExercise(){
-const w=getWorkout(),ex=w[eIdx];if(!ex)return"";const t=EX[ex.type];
+const w=curWorkout(),ex=w[eIdx];if(!ex)return"";const t=curDisplay(ex);
+const bt=bonusMode&&BONUS[bonusId]?BONUS[bonusId].timer:null;
 const cp=ph==="hold"&&ex?((ex.hold-tLeft)/ex.hold)*100:0;
 let wpT=0,wpD=0;w.forEach((e,i)=>{const x=e.reps*e.sets;wpT+=x;if(i<eIdx)wpD+=x;else if(i===eIdx)wpD+=(cSet-1)*e.reps+(cRep-1)});
 const wp=ph==="done"?100:(wpT?Math.round(wpD/wpT*100):0);
-const phColor=ph==="hold"?t.color:ph==="rest"?"#3b82f6":"#f59e0b";
-const phaseText=ph==="hold"?(ex.type==="reverse"?"ENTSPANNEN ↓":"ANSPANNEN"):ph==="rest"?"PAUSE":ph==="sBrk"?"SATZPAUSE":"BEREIT";
-const hint=ph==="hold"?(ex.type==="reverse"?"Beckenboden bewusst nach UNTEN loslassen":ex.type==="flick"?"Schnell anspannen & sofort loslassen":ex.type==="elevator"?"Stufenweise: 25% → 50% → 75% → 100%":ex.type==="wave"?"Fließend wie eine Welle":"Gleichmäßig halten – weiteratmen"):"";
+const phColor=paused?"#f59e0b":ph==="hold"?t.color:ph==="rest"?"#3b82f6":"#f59e0b";
+const phaseText=paused?"PAUSIERT":ph==="hold"?(bt?bt.holdLabel:ex.type==="reverse"?"ENTSPANNEN ↓":"ANSPANNEN"):ph==="rest"?(bt?bt.restLabel:"PAUSE"):ph==="sBrk"?"SATZPAUSE":"BEREIT";
+const hint=paused?"":(bt?bt.hint:ph==="hold"?(ex.type==="reverse"?"Beckenboden bewusst nach UNTEN loslassen":ex.type==="flick"?"Schnell anspannen & sofort loslassen":ex.type==="elevator"?"Stufenweise: 25% → 50% → 75% → 100%":ex.type==="wave"?"Fließend wie eine Welle":"Gleichmäßig halten – weiteratmen"):"");
 
 return`
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;color:${t.color}">${t.icon}</span><span style="font-size:15px;font-weight:700">${t.name}</span></div>
-<span style="font-size:12px;color:var(--t3)">Übung ${eIdx+1}/${w.length}</span>
+<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;color:${t.color}">${t.icon}</span><span style="font-size:15px;font-weight:700">${t.name}</span>${bonusMode?'<span class="badge" style="color:var(--pink);background:#ec489918;font-size:10px">Bonus</span>':''}</div>
+<span style="font-size:12px;color:var(--t3)">${bonusMode?'Bonus-Übung':'Übung '+(eIdx+1)+'/'+w.length}</span>
 </div>
 <div style="font-size:11px;color:var(--t4);margin-bottom:3px">📍 ${t.pos}</div>
 <div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5">${t.steps[0]}</div>
@@ -249,13 +255,14 @@ return`
 ${ph==="done"?`<div style="font-size:40px">🎉</div><div class="phl">Geschafft!</div>`:ph==="exBrk"?`<div style="font-size:30px">🔄</div><div class="phl">Nächste Übung</div>`:`<div class="t-num" style="color:${phColor}">${tLeft}</div><div class="phl">${phaseText}</div><div style="font-size:12px;color:var(--t4);margin-top:4px">Satz ${cSet}/${ex.sets} · Wdh. ${cRep}/${ex.reps}</div>`}
 </div>
 </div>
-${ph==="hold"?`<div style="text-align:center;font-size:12px;color:${t.color};opacity:.8;margin-bottom:6px">${hint}</div>`:''}
-${ph==="rest"?`<div style="text-align:center;font-size:12px;color:var(--blue);opacity:.7;margin-bottom:6px">Vollständig loslassen</div>`:''}
-<div style="display:flex;align-items:center;gap:10px;margin:10px 0"><div style="flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden"><div style="height:100%;width:${wp}%;background:linear-gradient(90deg,var(--green),#34d399);border-radius:2px;transition:width .5s"></div></div><span style="font-size:11px;color:var(--t3);font-weight:600;min-width:32px;text-align:right">${wp}%</span></div>
-<div style="display:flex;justify-content:center;gap:5px;margin-bottom:16px">${w.map((e,i)=>`<div style="width:${i===eIdx?24:8}px;height:8px;border-radius:4px;background:${i<eIdx?EX[e.type].color:i===eIdx?EX[e.type].color+'77':'var(--border)'};transition:all .3s"></div>`).join("")}</div>
+${ph==="hold"&&hint?`<div style="text-align:center;font-size:12px;color:${t.color};opacity:.8;margin-bottom:6px">${hint}</div>`:''}
+${ph==="rest"&&!bt?`<div style="text-align:center;font-size:12px;color:var(--blue);opacity:.7;margin-bottom:6px">Vollständig loslassen</div>`:''}
+<div style="display:flex;align-items:center;gap:10px;margin:10px 0"><div style="flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden"><div style="height:100%;width:${wp}%;background:linear-gradient(90deg,${t.color||'var(--green)'},${t.color||'var(--green)'}88);border-radius:2px;transition:width .5s"></div></div><span style="font-size:11px;color:var(--t3);font-weight:600;min-width:32px;text-align:right">${wp}%</span></div>
+${!bonusMode?`<div style="display:flex;justify-content:center;gap:5px;margin-bottom:16px">${w.map((e,i)=>`<div style="width:${i===eIdx?24:8}px;height:8px;border-radius:4px;background:${i<eIdx?EX[e.type].color:i===eIdx?EX[e.type].color+'77':'var(--border)'};transition:all .3s"></div>`).join("")}</div>`:'<div style="margin-bottom:16px"></div>'}
 <div style="display:flex;justify-content:center;gap:12px">
-${ph==="done"?`<button onclick="completeWorkout()" class="comp-btn">✓ Abschließen</button>`:ph==="exBrk"?`<button onclick="nextExercise()" class="comp-btn" style="background:linear-gradient(135deg,${EX[w[eIdx+1]?.type]?.color||'var(--green)'},${EX[w[eIdx+1]?.type]?.color||'var(--green)'}cc)">Weiter: ${EX[w[eIdx+1]?.type]?.name||''} →</button>`:`<button onclick="stopWorkout()" class="c-btn">Abbrechen</button>`}
-</div>`;
+${ph==="done"?`<button onclick="completeWorkout()" class="comp-btn">✓ Abschließen</button>`:ph==="exBrk"?`<button onclick="nextExercise()" class="comp-btn" style="background:linear-gradient(135deg,${EX[w[eIdx+1]?.type]?.color||'var(--green)'},${EX[w[eIdx+1]?.type]?.color||'var(--green)'}cc)">Weiter: ${EX[w[eIdx+1]?.type]?.name||''} →</button>`:`<button onclick="stopWorkout()" class="c-btn">Abbrechen</button>${paused?`<button onclick="resumeWorkout()" class="comp-btn" style="background:linear-gradient(135deg,var(--green),#059669)">▶ Fortsetzen</button>`:`<button onclick="pauseWorkout()" style="padding:8px 20px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);border-radius:8px;color:var(--yellow);font-size:12px;font-weight:600">⏸ Pause</button>`}`}
+</div>
+${paused?`<div style="text-align:center;margin-top:14px;padding:12px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.12);border-radius:10px"><span style="font-size:14px;color:var(--yellow);font-weight:700">⏸ Pausiert</span><div style="font-size:11px;color:var(--t3);margin-top:4px">Drücke Fortsetzen, um weiterzumachen</div></div>`:''}`;
 }
 
 function renderBonus(){
@@ -264,6 +271,7 @@ return`<h2 class="pt">Bonus-Übungen</h2>
 <p style="font-size:13px;color:var(--t2);margin-top:-10px;margin-bottom:6px;line-height:1.6">Zusätzliche Übungen für Zuhause – für noch bessere Ergebnisse und gezielte Kontrolle.</p>
 <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
 <span class="badge" style="padding:3px 10px;background:#ec489915;color:var(--pink);border:1px solid #ec489933;font-size:11px">♂ Kontrolle</span>
+<span class="badge" style="padding:3px 10px;background:#06b6d415;color:var(--cyan);border:1px solid #06b6d433;font-size:11px">⏱ Mit Timer</span>
 <span class="badge" style="padding:3px 10px;background:#10b98115;color:var(--green);border:1px solid #10b98133;font-size:11px">🏠 Zuhause</span>
 </div>
 ${Object.values(BONUS).map(b=>`
@@ -272,7 +280,7 @@ ${Object.values(BONUS).map(b=>`
 <div style="display:flex;align-items:center;gap:10px">
 <div style="font-size:20px;width:38px;height:38px;border-radius:10px;background:${b.color}18;display:flex;align-items:center;justify-content:center">${b.icon}</div>
 <div style="flex:1">
-<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font-weight:700;font-size:14px">${b.name}</span>${b.ctrl?`<span class="badge" style="color:var(--pink);background:#ec489918">Kontrolle</span>`:''}</div>
+<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font-weight:700;font-size:14px">${b.name}</span>${b.ctrl?`<span class="badge" style="color:var(--pink);background:#ec489918">Kontrolle</span>`:''}${b.timer?`<span class="badge" style="color:var(--cyan);background:#06b6d418">⏱ Timer</span>`:''}</div>
 <div style="font-size:12px;color:var(--t3)">${b.short}</div>
 <div style="font-size:11px;color:var(--t4)">📍 ${b.pos} · ⏱ ${b.dur} · 🎯 ${b.goal}</div>
 </div>
@@ -283,7 +291,8 @@ ${selBonus===b.id?`<div class="b-det" style="border-color:${b.color}33">
 <div style="font-weight:700;color:${b.color};font-size:13px;margin-bottom:8px">Anleitung:</div>
 ${b.steps.map((s,i)=>`<div style="display:flex;gap:7px;margin-bottom:6px"><span class="sn" style="background:${b.color}20;color:${b.color}">${i+1}</span><span style="font-size:12px;color:var(--t2);line-height:1.6">${s}</span></div>`).join("")}
 <div style="font-size:12px;color:var(--t3);margin-top:8px;padding:8px 10px;background:var(--bg);border-radius:8px">💡 ${b.tip}</div>
-<button onclick="logBonus('${b.id}')" class="log-btn" style="background:${b.color}20;color:${b.color};border-color:${b.color}44">Als erledigt markieren</button>
+${b.timer?`<button onclick="event.stopPropagation();startBonusWorkout('${b.id}')" class="log-btn" style="background:${b.color}30;color:${b.color};border-color:${b.color}66;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px"><span>▶</span> Mit Timer starten <span style="font-size:10px;opacity:.7">(${b.timer.hold}s × ${b.timer.reps} × ${b.timer.sets})</span></button>`:''}
+<button onclick="event.stopPropagation();logBonus('${b.id}')" class="log-btn" style="background:${b.color}12;color:${b.color};border-color:${b.color}33;font-size:11px">${b.timer?'Ohne Timer als erledigt markieren':'Als erledigt markieren'}</button>
 </div>`:''}
 </div>`).join("")}
 ${bl.length>0?`<div class="card" style="margin-top:8px"><div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px">Heute absolviert</div><div style="display:flex;flex-wrap:wrap;gap:6px">${bl.map(id=>{const b=BONUS[id];return b?`<span style="font-size:11px;color:${b.color};background:${b.color}15;padding:3px 8px;border-radius:6px">${b.icon} ${b.name}</span>`:''}).join("")}</div></div>`:''}`;
@@ -353,6 +362,34 @@ return`<h2 class="pt">Statistik</h2>
 ${PHASES.map(p=>{const dn=D.currentPhase>p.num,ac=D.currentPhase===p.num,pr=dn?100:ac?Math.round(pProg()*100):0;return`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:12px;color:${pr>0?p.color:'var(--t4)'};font-weight:600">${p.name}${dn?' ✓':''}</span><span style="font-size:10px;color:var(--t4)">${pr}%</span></div><div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pr}%;background:${p.color};border-radius:3px;transition:width .5s"></div></div></div>`}).join("")}
 </div>
 <div class="g-card"><div style="font-size:13px;font-weight:700;color:var(--pink);margin-bottom:8px">Bonus</div><div style="font-size:12px;color:var(--t2)">Gesamt: ${Object.values(D.bonusLog).reduce((s,a)=>s+a.length,0)} Bonus-Einheiten</div></div>
+<div class="g-card">
+<div style="font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:10px">🔔 Erinnerung</div>
+${canNotify()?`
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+<div><div style="font-size:13px;font-weight:600">Tägliche Erinnerung</div><div style="font-size:11px;color:var(--t3)">Benachrichtigung falls nicht trainiert</div></div>
+<button onclick="toggleNotify()" style="width:48px;height:28px;border-radius:14px;background:${D.notifyEnabled?'var(--green)':'var(--border)'};position:relative;transition:background .3s;padding:0"><div style="width:22px;height:22px;border-radius:11px;background:#fff;position:absolute;top:3px;${D.notifyEnabled?'right:3px':'left:3px'};transition:all .3s"></div></button>
+</div>
+${D.notifyEnabled?`
+<div style="display:flex;flex-direction:column;gap:8px;padding:12px;background:var(--bg);border-radius:8px">
+<div style="display:flex;align-items:center;gap:10px">
+<span style="font-size:12px;color:var(--t2);min-width:56px">⏰ Uhrzeit</span>
+<input type="time" value="${D.notifyTime}" onchange="setNotifyTime(this.value)" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--t1);font-family:inherit;font-size:14px;font-weight:600">
+</div>
+<div>
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><span style="font-size:12px;color:var(--t2)">💬 Nachricht</span><span style="font-size:10px;color:var(--t4)">(optional)</span></div>
+<textarea oninput="setNotifyText(this.value)" placeholder="z.B. Hey! Vergiss dein Training nicht 💪" rows="2" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--t1);font-family:inherit;font-size:12px;resize:none;line-height:1.5">${D.notifyText||''}</textarea>
+</div>
+</div>
+<div style="margin-top:8px;padding:8px 10px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.08);border-radius:6px">
+<div style="font-size:11px;color:var(--t3);margin-bottom:4px">Vorschau:</div>
+<div style="font-size:12px;font-weight:600;color:var(--t1)">PF Trainer – Erinnerung</div>
+<div style="font-size:11px;color:var(--t2);margin-top:2px">${D.notifyText||'Du hast heute noch nicht trainiert! Zeit für dein Beckenboden-Training. 💪'}</div>
+</div>
+<div style="font-size:11px;color:var(--t4);margin-top:6px">Kommt nur, wenn du noch nicht trainiert hast.</div>
+`:''}
+${!isPWA()?'<div style="font-size:11px;color:var(--yellow);margin-top:8px;padding:8px 10px;background:rgba(245,158,11,.06);border-radius:6px">💡 Für zuverlässige Benachrichtigungen: App zum Startbildschirm hinzufügen!</div>':''}
+`:`<div style="font-size:12px;color:var(--t3)">Benachrichtigungen werden auf diesem Gerät/Browser nicht unterstützt.</div>`}
+</div>
 <div style="text-align:center;margin-top:16px"><button onclick="resetAll()" style="padding:8px 18px;border:1px solid rgba(239,68,68,.18);border-radius:6px;color:var(--red);font-size:11px">Zurücksetzen</button></div>`;
 }
 
@@ -366,14 +403,30 @@ function goBack(){if(D.currentPhase<=1)return;D.currentPhase--;D.phaseStartDay=d
 
 function startWorkout(){
 const w=getWorkout();if(!w.length)return;
-eIdx=0;cRep=1;cSet=1;ph="hold";tLeft=w[0].hold;tActive=true;tone(660,.25);pg="exercise";render();timerTick();
+bonusMode=false;bonusId=null;
+eIdx=0;cRep=1;cSet=1;ph="hold";tLeft=w[0].hold;tActive=true;paused=false;tone(660,.25);pg="exercise";render();timerTick();
+}
+
+function startBonusWorkout(id){
+const b=BONUS[id];if(!b||!b.timer)return;
+bonusMode=true;bonusId=id;
+const t=b.timer;
+bWorkout=[{type:id,hold:t.hold,rest:t.rest,reps:t.reps,sets:t.sets,sBrk:t.sBrk||15}];
+eIdx=0;cRep=1;cSet=1;ph="hold";tLeft=t.hold;tActive=true;paused=false;tone(660,.25);pg="exercise";render();timerTick();
+}
+
+function curWorkout(){return bonusMode?bWorkout:getWorkout()}
+function curDisplay(ex){
+if(bonusMode&&bonusId&&BONUS[bonusId])return BONUS[bonusId];
+return EX[ex.type]||{};
 }
 
 function updateTimerDOM(){
-const w=getWorkout(),ex=w[eIdx];if(!ex)return;const t=EX[ex.type];
+const w=curWorkout(),ex=w[eIdx];if(!ex)return;const t=curDisplay(ex);
+const bt=bonusMode&&BONUS[bonusId]?BONUS[bonusId].timer:null;
 const cp=ph==="hold"&&ex?((ex.hold-tLeft)/ex.hold)*100:0;
 const phColor=ph==="hold"?t.color:ph==="rest"?"#3b82f6":"#f59e0b";
-const phaseText=ph==="hold"?(ex.type==="reverse"?"ENTSPANNEN ↓":"ANSPANNEN"):ph==="rest"?"PAUSE":ph==="sBrk"?"SATZPAUSE":"BEREIT";
+const phaseText=paused?"PAUSIERT":ph==="hold"?(bt?bt.holdLabel:ex.type==="reverse"?"ENTSPANNEN ↓":"ANSPANNEN"):ph==="rest"?(bt?bt.restLabel:"PAUSE"):ph==="sBrk"?"SATZPAUSE":"BEREIT";
 const numEl=document.querySelector('.t-num');
 const phlEl=document.querySelector('.phl');
 const circEl=document.querySelector('.timer-wrap circle:nth-child(2)');
@@ -387,15 +440,15 @@ if(setEl&&setEl.style)setEl.innerHTML=`Satz ${cSet}/${ex.sets} · Wdh. ${cRep}/$
 function timerTick(){
 clearInterval(iRef);
 iRef=setInterval(()=>{
-if(!tActive||ph==="ready"||ph==="done"||ph==="exBrk")return clearInterval(iRef);
+if(!tActive||paused||ph==="ready"||ph==="done"||ph==="exBrk")return clearInterval(iRef);
 tLeft--;
 if(tLeft<=0){
-const w=getWorkout(),ex=w[eIdx];
+const w=curWorkout(),ex=w[eIdx];
 if(ph==="hold"){
 tone(440,.25);
 if(cRep>=ex.reps&&cSet>=ex.sets){
 if(eIdx>=w.length-1){ph="done";tActive=false}else{ph="exBrk";tActive=false}
-}else if(cRep>=ex.reps){ph="sBrk";cRep=1;cSet++;tLeft=15}
+}else if(cRep>=ex.reps){ph="sBrk";cRep=1;cSet++;tLeft=ex.sBrk||15}
 else{ph="rest";tLeft=ex.rest}
 }else if(ph==="rest"){tone(660,.25);cRep++;ph="hold";tLeft=w[eIdx].hold}
 else if(ph==="sBrk"){tone(660,.25);ph="hold";tLeft=w[eIdx].hold}
@@ -405,12 +458,20 @@ updateTimerDOM();
 },1000);
 }
 
-function nextExercise(){const w=getWorkout();eIdx++;cRep=1;cSet=1;ph="hold";tLeft=w[eIdx].hold;tActive=true;tone(660,.25);render();timerTick()}
-function stopWorkout(){clearInterval(iRef);tActive=false;ph="ready";pg="home";render()}
+function nextExercise(){const w=curWorkout();eIdx++;cRep=1;cSet=1;ph="hold";tLeft=w[eIdx].hold;tActive=true;paused=false;tone(660,.25);render();timerTick()}
+function pauseWorkout(){paused=true;clearInterval(iRef);render()}
+function resumeWorkout(){paused=false;render();timerTick()}
+function stopWorkout(){clearInterval(iRef);tActive=false;paused=false;ph="ready";pg=bonusMode?"bonus":"home";bonusMode=false;bonusId=null;bWorkout=[];render()}
 function completeWorkout(){
-clearInterval(iRef);const t=td(),nd={...D.completedDays};nd[t]=(nd[t]||0)+1;const s=calcStreak(nd);
+clearInterval(iRef);
+if(bonusMode&&bonusId){
+logBonus(bonusId);
+tActive=false;paused=false;ph="ready";pg="bonus";bonusMode=false;bonusId=null;bWorkout=[];render();
+}else{
+const t=td(),nd={...D.completedDays};nd[t]=(nd[t]||0)+1;const s=calcStreak(nd);
 D.completedDays=nd;D.totalSessions++;D.currentStreak=s;D.bestStreak=Math.max(D.bestStreak,s);
-save();tActive=false;ph="ready";pg="home";render();
+save();tActive=false;paused=false;ph="ready";pg="home";bonusMode=false;bonusId=null;bWorkout=[];render();
+}
 }
 
 function logBonus(id){const t=td();if(!D.bonusLog[t])D.bonusLog[t]=[];D.bonusLog[t].push(id);save();render()}
@@ -420,6 +481,59 @@ function calNext(){if(cm===11){cm=0;cy++}else cm++;render()}
 
 function resetAll(){if(confirm("Alle Daten löschen?")){D={...INIT,startDate:td()};save();pg="home";render()}}
 
+// ═══ NOTIFICATIONS ═══
+function isPWA(){return window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true}
+function canNotify(){return 'Notification' in window&&'serviceWorker' in navigator}
+
+async function requestNotifyPerm(){
+if(!canNotify())return 'denied';
+const p=await Notification.requestPermission();
+return p;
+}
+
+async function toggleNotify(){
+if(!D.notifyEnabled){
+if(!canNotify()){alert('Benachrichtigungen werden auf diesem Gerät nicht unterstützt.');return}
+const p=await requestNotifyPerm();
+if(p!=='granted'){alert('Bitte erlaube Benachrichtigungen in den Browser-/Geräte-Einstellungen.');return}
+D.notifyEnabled=true;
+}else{
+D.notifyEnabled=false;
+}
+save();render();scheduleNotifyCheck();
+}
+
+function setNotifyTime(t){D.notifyTime=t;save();scheduleNotifyCheck()}
+function setNotifyText(t){D.notifyText=t;save()}
+
+function checkAndNotify(){
+if(!D.notifyEnabled||!D.onboarded)return;
+const now=new Date();
+const[h,m]=D.notifyTime.split(':').map(Number);
+const nowM=now.getHours()*60+now.getMinutes();
+const targetM=h*60+m;
+// Check within a 2-minute window of the target time
+if(Math.abs(nowM-targetM)>1)return;
+// Already trained today?
+if(D.completedDays[td()])return;
+// Already notified today?
+const notifiedKey='pf-notified-'+td();
+if(localStorage.getItem(notifiedKey))return;
+localStorage.setItem(notifiedKey,'1');
+const notifyBody=D.notifyText||'Du hast heute noch nicht trainiert! Zeit für dein Beckenboden-Training. 💪';
+// Show notification
+if('serviceWorker' in navigator&&navigator.serviceWorker.controller){
+navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFY',title:'PF Trainer – Erinnerung',body:notifyBody});
+}else if('Notification' in window&&Notification.permission==='granted'){
+new Notification('PF Trainer – Erinnerung',{body:notifyBody,icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23080c16" width="100" height="100" rx="20"/><text x="50" y="62" text-anchor="middle" font-size="50" fill="%2310b981">◆</text></svg>'});
+}
+}
+
+function scheduleNotifyCheck(){
+if(notifyCheckRef)clearInterval(notifyCheckRef);
+if(D.notifyEnabled){notifyCheckRef=setInterval(checkAndNotify,60000);checkAndNotify()}
+}
+
 // ═══ SERVICE WORKER ═══
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
 
@@ -427,6 +541,7 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').cat
 load();
 document.getElementById("loader").remove();
 render();
+scheduleNotifyCheck();
 
 // Auto phase advance
 if(D.onboarded&&dInPhase()>=pDur()&&D.currentPhase<5){D.currentPhase++;D.phaseStartDay=dayN();save()}
